@@ -225,7 +225,8 @@ init_db()
 # ==============================================================================
 USUARIOS_SISTEMA = {
     "ivo": "zamboni2026",
-    "socio": "distribuidora2026"
+    "socio": "distribuidora2026",
+    "admin": "zamboni123"
 }
 
 if "autenticado" not in st.session_state:
@@ -238,7 +239,7 @@ if not st.session_state["autenticado"]:
     st.markdown("<p>Ambiente seguro para pesquisa automatizada de cotações, NCM, estoque e distribuidores.</p>", unsafe_allow_html=True)
     st.markdown("<div style='height: 30px;'></div>", unsafe_allow_html=True)
     
-    col_l1, _ = st.columns()
+    col_l1, col_l2 = st.columns()
     with col_l1:
         user_input = st.text_input("Usuário:", placeholder="ex: ivo")
         pass_input = st.text_input("Senha:", type="password", placeholder="••••••••")
