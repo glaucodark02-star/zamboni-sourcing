@@ -96,18 +96,17 @@ if not st.session_state["autenticado"]:
     st.write("Ambiente seguro para pesquisa automatizada de cotações, NCM, estoque e distribuidores.")
     
     st.markdown("<div style='height: 20px;'></div>", unsafe_allow_html=True)
-    col_u, col_v = st.columns()
-    with col_u:
-        user_input = st.text_input("Usuário:", placeholder="ex: ivo")
-        pass_input = st.text_input("Senha:", type="password", placeholder="••••••••")
-        st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
-        if st.button("ACESSAR SISTEMA"):
-            if user_input.lower() in USUARIOS and USUARIOS[user_input.lower()] == pass_input:
-                st.session_state["autenticado"] = True
-                st.session_state["usuario"] = user_input.lower()
-                st.rerun()
-            else:
-                st.error("Usuário ou senha incorretos.")
+    
+    user_input = st.text_input("Usuário:", placeholder="ex: ivo")
+    pass_input = st.text_input("Senha:", type="password", placeholder="••••••••")
+    st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
+    if st.button("ACESSAR SISTEMA"):
+        if user_input.lower() in USUARIOS and USUARIOS[user_input.lower()] == pass_input:
+            st.session_state["autenticado"] = True
+            st.session_state["usuario"] = user_input.lower()
+            st.rerun()
+        else:
+            st.error("Usuário ou senha incorretos.")
     st.stop()
 
 # ==============================================================================
@@ -149,29 +148,21 @@ def buscar_estoque_ml(termo):
 # ==============================================================================
 # PAINEL PRINCIPAL
 # ==============================================================================
-col_topo1, col_topo2 = st.columns()
-with col_topo1:
-    st.markdown('<div class="tag-amber">PORTAL DE LICITAÇÕES & SUPRIMENTOS</div>', unsafe_allow_html=True)
-    st.title("Zamboni & Giron")
-    st.caption("Pesquisa automatizada de itens, NCM fiscal, links com estoque, distribuidores e análise de importados.")
-
-with col_topo2:
-    st.markdown(f"<div style='text-align: right; padding-top: 10px;'><span class='tag-iris'>OPERADOR: {st.session_state['usuario'].upper()}</span></div>", unsafe_allow_html=True)
-    if st.button("DESCONECTAR"):
-        st.session_state["autenticado"] = False
-        st.rerun()
+st.markdown('<div class="tag-amber">PORTAL DE LICITAÇÕES & SUPRIMENTOS</div>', unsafe_allow_html=True)
+st.title("Zamboni & Giron")
+st.caption("Pesquisa automatizada de itens, NCM fiscal, links com estoque, distribuidores e análise de importados.")
+st.markdown(f"<span class='tag-iris'>OPERADOR: {st.session_state['usuario'].upper()}</span>", unsafe_allow_html=True)
+if st.button("DESCONECTAR"):
+    st.session_state["autenticado"] = False
+    st.rerun()
 
 st.markdown("---")
 
 tab1, tab2, tab3 = st.tabs(["⚡ NOVA PESQUISA", "📂 HISTÓRICO COMPARTILHADO", "🏭 DISTRIBUIDORES"])
 
 with tab1:
-    col_in1, col_in2 = st.columns()
-    with col_in1:
-        raw_text = st.text_area("Descrição do Item (Petronect / Compras.gov.br / Edital):", placeholder="Cole a descrição aqui...", height=80)
-    with col_in2:
-        st.markdown("<div style='height: 28px;'></div>", unsafe_allow_html=True)
-        btn_pesquisar = st.button("⚡ PESQUISAR ITEM", use_container_width=True)
+    raw_text = st.text_area("Descrição do Item (Petronect / Compras.gov.br / Edital):", placeholder="Cole a descrição aqui...", height=80)
+    btn_pesquisar = st.button("⚡ PESQUISAR ITEM")
 
     if btn_pesquisar and raw_text:
         with st.spinner("Pesquisando dados fiscais, catálogos e estoques..."):
@@ -182,56 +173,42 @@ with tab1:
             produtos = buscar_estoque_ml(f"{fab} {pn}".strip())
 
         st.markdown("---")
-        c1, c2, c3, c4 = st.columns()
-        with c1:
-            st.markdown('<div class="tag-amber">PART NUMBER & MARCA</div>', unsafe_allow_html=True)
-            st.markdown(f"<div class='metric-val'>{pn}</div>", unsafe_allow_html=True)
-            st.caption(f"Fabricante: {fab}")
-        with c2:
-            st.markdown('<div class="tag-amber">CLASSIFICAÇÃO FISCAL</div>', unsafe_allow_html=True)
-            st.markdown(f"<div class='metric-val'>{ncm_code}</div>", unsafe_allow_html=True)
-            st.caption(ncm_desc[:40] + "...")
-        with c3:
-            st.markdown('<div class="tag-amber">STATUS DO PRODUTO</div>', unsafe_allow_html=True)
-            st.markdown(f"<div class='metric-val'>{status_linha}</div>", unsafe_allow_html=True)
-        with c4:
-            st.markdown('<div class="tag-amber">VIABILIDADE LOGÍSTICA</div>', unsafe_allow_html=True)
-            st.markdown(f"<div class='metric-val'>{viabilidade}</div>", unsafe_allow_html=True)
+        st.markdown(f"**Part Number:** {pn} | **Fabricante:** {fab}")
+        st.markdown(f"**NCM Oficial:** {ncm_code} ({ncm_desc[:45]}...)")
+        st.markdown(f"**Status da Linha:** {status_linha} | **Logística:** {viabilidade}")
 
         st.markdown("<div style='height: 20px;'></div>", unsafe_allow_html=True)
-        col_res1, col_res2 = st.columns()
-        with col_res1:
-            st.markdown("### 🛒 Links de Compra com Estoque")
-            if produtos:
-                for p in produtos:
-                    st.markdown(f"""
-                    <div style="padding: 10px 0; border-bottom: 1px solid #1a1a1a;">
-                        <a href="{p['link']}" target="_blank" style="color: #ffffff; font-size: 15px; font-weight: 500; text-decoration: none;">🔗 {p['titulo']}</a><br>
-                        <span style="color: #ffffff; font-weight: 600; font-size: 17px;">R$ {p['preco']:,.2f}</span>
-                        <span style="color: #9a9a9a; margin-left: 15px;">Estoque: <strong>{p['estoque']} un</strong></span>
-                        <span style="color: #15846e; margin-left: 10px;">{'🚚 Frete Grátis' if p['frete_gratis'] else ''}</span>
-                    </div>
-                    """, unsafe_allow_html=True)
-            else:
-                st.warning("Sem estoque imediato em marketplace aberto.")
-            
-            google_link = f"https://www.google.com.br/search?q={fab}+{pn}+distribuidor+brasil"
-            st.markdown(f"<br><a href='{google_link}' target='_blank' style='color: #8052ff; font-weight: 600;'>🔍 Buscar Distribuidores no Google &rarr;</a>", unsafe_allow_html=True)
+        st.markdown("### 🛒 Links de Compra com Estoque")
+        if produtos:
+            for p in produtos:
+                st.markdown(f"""
+                <div style="padding: 10px 0; border-bottom: 1px solid #1a1a1a;">
+                    <a href="{p['link']}" target="_blank" style="color: #ffffff; font-size: 15px; font-weight: 500; text-decoration: none;">🔗 {p['titulo']}</a><br>
+                    <span style="color: #ffffff; font-weight: 600; font-size: 17px;">R$ {p['preco']:,.2f}</span>
+                    <span style="color: #9a9a9a; margin-left: 15px;">Estoque: <strong>{p['estoque']} un</strong></span>
+                    <span style="color: #15846e; margin-left: 10px;">{'🚚 Frete Grátis' if p['frete_gratis'] else ''}</span>
+                </div>
+                """, unsafe_allow_html=True)
+        else:
+            st.warning("Sem estoque imediato em marketplace aberto.")
+        
+        google_link = f"https://www.google.com.br/search?q={fab}+{pn}+distribuidor+brasil"
+        st.markdown(f"<br><a href='{google_link}' target='_blank' style='color: #8052ff; font-weight: 600;'>🔍 Buscar Distribuidores no Google &rarr;</a>", unsafe_allow_html=True)
 
-        with col_res2:
-            st.markdown("### 🏭 Canal Direto do Fabricante")
-            st.markdown(f"""
-            <div style="background-color: #0d0d0d; padding: 16px; border-radius: 12px; border: 1px solid #1f1f1f;">
-                <span class="tag-amber">CANAL COMERCIAL HOMOLOGADO</span>
-                <p style="color: #ffffff; font-size: 15px; margin: 4px 0;"><strong>Fabricante:</strong> {fab}</p>
-                <p style="color: #bdbdbd; font-size: 13px; margin: 2px 0;"><strong>Canal Oficial Brasil:</strong> Televendas / Engenharia</p>
-                <p style="color: #bdbdbd; font-size: 13px; margin: 2px 0;"><strong>E-mail Sugerido:</strong> vendas.corporativas@{fab.lower().replace(' ', '')}.com.br</p>
-            </div>
-            """, unsafe_allow_html=True)
-            
-            rfq = f"""Prezados,\n\nSomos da ZAMBONI & GIRON COMERCIO E DISTRIBUICAO LTDA (CNPJ: 58.305.267/0001-77).\nSolicitamos cotação de preços para revenda do item abaixo com entrega no Espírito Santo:\n\n• Fabricante: {fab}\n• Part Number: {pn}\n• Descrição: {raw_text}\n• NCM: {ncm_code}\n\nFavor informar preço unitário com impostos, prazo de entrega CIF e envio da Ficha Técnica.\n\nAtenciosamente,\nZamboni & Giron | zambonigirondistribuidora@gmail.com"""
-            with st.expander("✉️ VER MODELO DE E-MAIL (RFQ)"):
-                st.text_area("Copie o texto:", rfq, height=140)
+        st.markdown("<div style='height: 20px;'></div>", unsafe_allow_html=True)
+        st.markdown("### 🏭 Canal Direto do Fabricante")
+        st.markdown(f"""
+        <div style="background-color: #0d0d0d; padding: 16px; border-radius: 12px; border: 1px solid #1f1f1f;">
+            <span class="tag-amber">CANAL COMERCIAL HOMOLOGADO</span>
+            <p style="color: #ffffff; font-size: 15px; margin: 4px 0;"><strong>Fabricante:</strong> {fab}</p>
+            <p style="color: #bdbdbd; font-size: 13px; margin: 2px 0;"><strong>Canal Oficial Brasil:</strong> Televendas / Engenharia</p>
+            <p style="color: #bdbdbd; font-size: 13px; margin: 2px 0;"><strong>E-mail Sugerido:</strong> vendas.corporativas@{fab.lower().replace(' ', '')}.com.br</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        rfq = f"""Prezados,\n\nSomos da ZAMBONI & GIRON COMERCIO E DISTRIBUICAO LTDA (CNPJ: 58.305.267/0001-77).\nSolicitamos cotação de preços para revenda do item abaixo com entrega no Espírito Santo:\n\n• Fabricante: {fab}\n• Part Number: {pn}\n• Descrição: {raw_text}\n• NCM: {ncm_code}\n\nFavor informar preço unitário com impostos, prazo de entrega CIF e envio da Ficha Técnica.\n\nAtenciosamente,\nZamboni & Giron | zambonigirondistribuidora@gmail.com"""
+        with st.expander("✉️ VER MODELO DE E-MAIL (RFQ)"):
+            st.text_area("Copie o texto:", rfq, height=140)
 
         menor_p = produtos[0]["preco"] if produtos else 0.0
         link_p = produtos[0]["link"] if produtos else ""
