@@ -391,18 +391,4 @@ with tab2:
 
 with tab3:
     st.markdown("### 🏭 Diretório de Fabricantes & Distribuidores Homologados")
-    fornecedores = [
-        {"nome": "Schneider Electric / Telemecanique", "tipo": "Elétrica & Automação", "contato": "0800 7289 500 / schneider-electric.com.br", "status": "Nacional / Filial SP"},
-        {"nome": "WEG S/A", "tipo": "Motores, Drives e Contatores", "contato": "(47) 3276-4000 / weg.net", "status": "Fabricante Nacional"},
-        {"nome": "Swagelok Brasil (Tecflux)", "tipo": "Válvulas & Conexões Inox / JIC", "contato": "(11) 5080-8800 / swagelok.com.br", "status": "Distribuidor Master BR"},
-        {"nome": "Siemens Brasil", "tipo": "Instrumentação & Chaves", "contato": "0800 119 463 / siemens.com.br", "status": "Filial Nacional"},
-        {"nome": "Pado S/A", "tipo": "Cadeados & Fechaduras Inox", "contato": "0800 701 4224 / pado.com.br", "status": "Fabricante Nacional"}
-    ]
-    for f in fornecedores:
-        st.markdown(f"""
-        <div style="padding: 12px 0; border-bottom: 1px solid #1a1a1a;">
-            <span class="tag-iris">{f['tipo']}</span>
-            <div style="font-size: 17px; font-weight: 500; color: #ffffff; margin: 3px 0;">{f['nome']}</div>
-            <div style="font-size: 14px; color: #bdbdbd;">Contato: {f['contato']} | <strong>{f['status']}</strong></div>
-        </div>
-        """, unsafe_allow_html=True)
+    fornecedores =
