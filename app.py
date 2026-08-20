@@ -274,7 +274,7 @@ with tab1:
 
         st.markdown("<div style='height: 15px;'></div>", unsafe_allow_html=True)
         
-        c1, c2, c3, c4 = st.columns(4)
+        c1, c2, c3, c4 = st.columns()
         with c1:
             st.markdown('<div class="tag-amber">PART NUMBER & MARCA</div>', unsafe_allow_html=True)
             st.markdown(f"<div class='metric-title'>{meta['part_number']}</div>", unsafe_allow_html=True)
