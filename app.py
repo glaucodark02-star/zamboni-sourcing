@@ -6,177 +6,76 @@ import re
 from datetime import datetime
 
 # ==============================================================================
-# CONFIGURAÇÃO GERAL DA PÁGINA
+# 1. CONFIGURAÇÃO DA PÁGINA
 # ==============================================================================
 st.set_page_config(
     page_title="Zamboni & Giron — Sourcing & Licitações",
     page_icon="⚡",
-    layout="wide",
-    initial_sidebar_state="collapsed"
+    layout="wide"
 )
 
 # ==============================================================================
-# DESIGN SYSTEM: DALA STYLE REFERENCE (BLACK VOID & ELECTRIC IRIS)
+# 2. ESTILO VISUAL DALA (BLACK VOID & ELECTRIC IRIS)
 # ==============================================================================
-CUSTOM_CSS = """
+st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;400;600;700&display=swap');
-
-:root {
-    --color-void: #000000;
-    --color-bone-white: #ffffff;
-    --color-ash-gray: #9a9a9a;
-    --color-silver-mist: #bdbdbd;
-    --color-electric-iris: #8052ff;
-    --color-saffron-spark: #ffb829;
-    --color-deep-verdant: #15846e;
-    --font-stack: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-}
-
-/* Global App Surface */
-.stApp {
-    background-color: var(--color-void) !important;
-    color: var(--color-bone-white) !important;
-    font-family: var(--font-stack) !important;
-}
-
-/* Header & Typography */
-h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-stack) !important;
-    font-weight: 400 !important;
-    color: var(--color-bone-white) !important;
-    letter-spacing: -0.04em !important;
-}
-
-h1 {
-    font-size: 56px !important;
-    line-height: 1.05 !important;
-    letter-spacing: -2.2px !important;
-    margin-bottom: 8px !important;
-}
-
-h2 {
-    font-size: 32px !important;
-    letter-spacing: -1.2px !important;
-    margin-top: 24px !important;
-}
-
-h3 {
-    font-size: 20px !important;
-    letter-spacing: -0.6px !important;
-    color: var(--color-bone-white) !important;
-}
-
-p, span, label {
-    font-family: var(--font-stack) !important;
-    font-weight: 200 !important;
-    color: var(--color-silver-mist) !important;
-    font-size: 16px !important;
-    line-height: 1.5 !important;
-}
-
-/* Accent Labels */
-.zg-tag-amber {
-    font-family: var(--font-stack) !important;
-    font-size: 13px !important;
-    font-weight: 600 !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.05em !important;
-    color: var(--color-saffron-spark) !important;
-    margin-bottom: 6px !important;
-    display: inline-block;
-}
-
-.zg-tag-iris {
-    font-family: var(--font-stack) !important;
-    font-size: 13px !important;
-    font-weight: 600 !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.05em !important;
-    color: var(--color-electric-iris) !important;
-}
-
-/* Buttons: Electric Iris Pill */
-.stButton > button {
-    background-color: var(--color-electric-iris) !important;
-    color: var(--color-bone-white) !important;
-    border: none !important;
-    border-radius: 24px !important;
-    padding: 12px 28px !important;
-    font-family: var(--font-stack) !important;
-    font-size: 14px !important;
-    font-weight: 600 !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.03em !important;
-    transition: all 0.2s ease-in-out !important;
-    box-shadow: none !important;
-}
-
-.stButton > button:hover {
-    background-color: #6b3ee3 !important;
-    color: #ffffff !important;
-    transform: translateY(-1px);
-}
-
-/* Inputs & Textareas */
-.stTextInput > div > div > input,
-.stTextArea > div > div > textarea,
-.stSelectbox > div > div {
-    background-color: #0d0d0d !important;
-    color: var(--color-bone-white) !important;
-    border: 1px solid #1f1f1f !important;
-    border-radius: 16px !important;
-    font-family: var(--font-stack) !important;
-    font-weight: 400 !important;
-    font-size: 15px !important;
-    padding: 14px 18px !important;
-}
-
-.stTextInput > div > div > input:focus,
-.stTextArea > div > div > textarea:focus {
-    border-color: var(--color-electric-iris) !important;
-    box-shadow: 0 0 0 1px var(--color-electric-iris) !important;
-}
-
-/* Clean Metric Blocks */
-.zg-metric-card {
-    padding: 18px 0px;
-    border-bottom: 1px solid #161616;
-}
-
-.zg-metric-val {
-    font-size: 26px;
-    font-weight: 400;
-    color: #ffffff;
-    letter-spacing: -0.8px;
-    margin-top: 4px;
-}
-
-.zg-link-card {
-    padding: 16px 0;
-    border-bottom: 1px solid #141414;
-}
-
-.zg-link-title {
-    font-size: 16px;
-    font-weight: 400;
-    color: #ffffff !important;
-    text-decoration: none;
-}
-
-.zg-link-title:hover {
-    color: var(--color-saffron-spark) !important;
-}
-
-#MainMenu {visibility: hidden;}
-footer {visibility: hidden;}
-header {visibility: hidden;}
+    /* Fundo Preto Absoluto e Tipografia */
+    .stApp {
+        background-color: #000000;
+        color: #ffffff;
+    }
+    
+    /* Botão Principal em Violeta (Electric Iris Pill) */
+    .stButton > button {
+        background-color: #8052ff !important;
+        color: #ffffff !important;
+        border: none !important;
+        border-radius: 24px !important;
+        padding: 10px 24px !important;
+        font-weight: 600 !important;
+        letter-spacing: 0.03em !important;
+        text-transform: uppercase !important;
+    }
+    .stButton > button:hover {
+        background-color: #6b3ee3 !important;
+    }
+    
+    /* Inputs Escuros */
+    .stTextInput input, .stTextArea textarea {
+        background-color: #0d0d0d !important;
+        color: #ffffff !important;
+        border: 1px solid #222222 !important;
+        border-radius: 12px !important;
+    }
+    
+    /* Tags e Destaques */
+    .tag-amber {
+        color: #ffb829;
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        margin-bottom: 4px;
+    }
+    .tag-iris {
+        color: #8052ff;
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+    }
+    .metric-title {
+        font-size: 24px;
+        font-weight: 400;
+        color: #ffffff;
+        letter-spacing: -0.5px;
+        margin: 4px 0px;
+    }
 </style>
-"""
-st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
+""", unsafe_allow_html=True)
 
 # ==============================================================================
-# BANCO DE DADOS LOCAL (COMPARTILHADO)
+# 3. BANCO DE DADOS LOCAL (COMPARTILHADO)
 # ==============================================================================
 def init_db():
     conn = sqlite3.connect("sourcing_zamboni.db")
@@ -221,7 +120,7 @@ def listar_historico():
 init_db()
 
 # ==============================================================================
-# AUTENTICAÇÃO DOS SÓCIOS
+# 4. CONTROLE DE ACESSO (LOGIN)
 # ==============================================================================
 USUARIOS_SISTEMA = {
     "ivo": "zamboni2026",
@@ -234,25 +133,29 @@ if "autenticado" not in st.session_state:
     st.session_state["usuario"] = ""
 
 if not st.session_state["autenticado"]:
-    st.markdown('<div class="zg-tag-amber">ZAMBONI & GIRON — DISTRIBUIÇÃO INDUSTRIAL</div>', unsafe_allow_html=True)
-    st.markdown("<h1>Sourcing Intelligence</h1>", unsafe_allow_html=True)
-    st.markdown("<p>Ambiente seguro para pesquisa automatizada de cotações, NCM, estoque e distribuidores.</p>", unsafe_allow_html=True)
-    st.markdown("<div style='height: 30px;'></div>", unsafe_allow_html=True)
+    st.markdown('<div class="tag-amber">ZAMBONI & GIRON — DISTRIBUIÇÃO INDUSTRIAL</div>', unsafe_allow_html=True)
+    st.title("Sourcing Intelligence")
+    st.write("Ambiente seguro para pesquisa automatizada de cotações, NCM, estoque e distribuidores.")
     
-    user_input = st.text_input("Usuário:", placeholder="ex: ivo")
-    pass_input = st.text_input("Senha:", type="password", placeholder="••••••••")
-    st.markdown("<div style='height: 12px;'></div>", unsafe_allow_html=True)
-    if st.button("ACESSAR SISTEMA"):
-        if user_input.lower() in USUARIOS_SISTEMA and USUARIOS_SISTEMA[user_input.lower()] == pass_input:
-            st.session_state["autenticado"] = True
-            st.session_state["usuario"] = user_input.lower()
-            st.rerun()
-        else:
-            st.error("Credenciais inválidas. Tente novamente.")
+    st.markdown("<div style='height: 20px;'></div>", unsafe_allow_html=True)
+    
+    col_u, col_v = st.columns()
+    with col_u:
+        user_input = st.text_input("Usuário:", placeholder="ex: ivo")
+        pass_input = st.text_input("Senha:", type="password", placeholder="••••••••")
+        
+        st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
+        if st.button("ACESSAR SISTEMA"):
+            if user_input.lower() in USUARIOS_SISTEMA and USUARIOS_SISTEMA[user_input.lower()] == pass_input:
+                st.session_state["autenticado"] = True
+                st.session_state["usuario"] = user_input.lower()
+                st.rerun()
+            else:
+                st.error("Usuário ou senha incorretos. Tente novamente.")
     st.stop()
 
 # ==============================================================================
-# MOTOR DE INTELIGÊNCIA & APIS GRATUITAS
+# 5. MOTOR DE INTELIGÊNCIA & APIS GRATUITAS
 # ==============================================================================
 def extrair_metadados(texto):
     texto_limpo = texto.strip()
@@ -332,31 +235,31 @@ def avaliar_ciclo_e_origem(fabricante, pn):
     return status_linha, substituto, tipo_origem, facilidade_importado
 
 # ==============================================================================
-# INTERFACE PRINCIPAL DO SISTEMA
+# 6. PAINEL PRINCIPAL APÓS LOGIN
 # ==============================================================================
-col_h1, col_h2 = st.columns()
-with col_h1:
-    st.markdown('<div class="zg-tag-amber">PORTAL DE LICITAÇÕES & SUPRIMENTOS</div>', unsafe_allow_html=True)
-    st.markdown("<h1>Zamboni & Giron</h1>", unsafe_allow_html=True)
-    st.markdown("<p>Pesquisa automatizada de itens, NCM fiscal, links com estoque, distribuidores e análise de importados.</p>", unsafe_allow_html=True)
+col_topo1, col_topo2 = st.columns()
+with col_topo1:
+    st.markdown('<div class="tag-amber">PORTAL DE LICITAÇÕES & SUPRIMENTOS</div>', unsafe_allow_html=True)
+    st.title("Zamboni & Giron")
+    st.caption("Pesquisa automatizada de itens, NCM fiscal, links com estoque, distribuidores e análise de importados.")
 
-with col_h2:
-    st.markdown(f"<div style='text-align: right; padding-top: 15px;'><span class='zg-tag-iris'>OPERADOR: {st.session_state['usuario'].upper()}</span></div>", unsafe_allow_html=True)
-    if st.button("DESCONECTAR", key="logout"):
+with col_topo2:
+    st.markdown(f"<div style='text-align: right; padding-top: 10px;'><span class='tag-iris'>OPERADOR: {st.session_state['usuario'].upper()}</span></div>", unsafe_allow_html=True)
+    if st.button("DESCONECTAR"):
         st.session_state["autenticado"] = False
         st.rerun()
 
-st.markdown("<div style='height: 30px;'></div>", unsafe_allow_html=True)
+st.markdown("---")
 
-tab_pesquisa, tab_historico, tab_diretorio = st.tabs(["⚡ NOVA PESQUISA", "📂 HISTÓRICO COMPARTILHADO", "🏭 DISTRIBUIDORES"])
+tab1, tab2, tab3 = st.tabs(["⚡ NOVA PESQUISA", "📂 HISTÓRICO COMPARTILHADO", "🏭 DISTRIBUIDORES"])
 
-with tab_pesquisa:
+with tab1:
     col_in1, col_in2 = st.columns()
     with col_in1:
         raw_text = st.text_area(
             "Descrição do Item (Petronect / Compras.gov.br / Edital):",
             placeholder="Exemplo: AQUISIÇÃO DE JOGO DE CONTATO PARA CONTATOR TELEMECANIQUE PN: LC1D25B7 TENSÃO 24V QTD: 50 UNIDADES",
-            height=100
+            height=90
         )
     with col_in2:
         st.markdown("<div style='height: 28px;'></div>", unsafe_allow_html=True)
@@ -369,31 +272,30 @@ with tab_pesquisa:
             status_linha, substituto, tipo_origem, facilidade_imp = avaliar_ciclo_e_origem(meta["fabricante"], meta["part_number"])
             produtos_ml = buscar_mercado_livre(f"{meta['fabricante']} {meta['part_number']}".strip())
 
-        st.markdown("<div style='height: 20px;'></div>", unsafe_allow_html=True)
-        st.markdown("---")
+        st.markdown("<div style='height: 15px;'></div>", unsafe_allow_html=True)
         
-        c1, c2, c3, c4 = st.columns()
+        c1, c2, c3, c4 = st.columns(4)
         with c1:
-            st.markdown('<div class="zg-tag-amber">PART NUMBER & MARCA</div>', unsafe_allow_html=True)
-            st.markdown(f"<div class='zg-metric-val'>{meta['part_number']}</div>", unsafe_allow_html=True)
+            st.markdown('<div class="tag-amber">PART NUMBER & MARCA</div>', unsafe_allow_html=True)
+            st.markdown(f"<div class='metric-title'>{meta['part_number']}</div>", unsafe_allow_html=True)
             st.caption(f"Fabricante: {meta['fabricante']}")
             
         with c2:
-            st.markdown('<div class="zg-tag-amber">CLASSIFICAÇÃO FISCAL</div>', unsafe_allow_html=True)
-            st.markdown(f"<div class='zg-metric-val'>{ncm_code}</div>", unsafe_allow_html=True)
+            st.markdown('<div class="tag-amber">CLASSIFICAÇÃO FISCAL</div>', unsafe_allow_html=True)
+            st.markdown(f"<div class='metric-title'>{ncm_code}</div>", unsafe_allow_html=True)
             st.caption(ncm_desc[:45] + "...")
             
         with c3:
-            st.markdown('<div class="zg-tag-amber">STATUS DO PRODUTO</div>', unsafe_allow_html=True)
-            st.markdown(f"<div class='zg-metric-val'>{status_linha}</div>", unsafe_allow_html=True)
+            st.markdown('<div class="tag-amber">STATUS DO PRODUTO</div>', unsafe_allow_html=True)
+            st.markdown(f"<div class='metric-title'>{status_linha}</div>", unsafe_allow_html=True)
             st.caption(f"Substituto: {substituto}" if substituto else "Item ativo em linha")
                 
         with c4:
-            st.markdown('<div class="zg-tag-amber">VIABILIDADE LOGÍSTICA</div>', unsafe_allow_html=True)
-            st.markdown(f"<div class='zg-metric-val'>{facilidade_imp}</div>", unsafe_allow_html=True)
+            st.markdown('<div class="tag-amber">VIABILIDADE LOGÍSTICA</div>', unsafe_allow_html=True)
+            st.markdown(f"<div class='metric-title'>{facilidade_imp}</div>", unsafe_allow_html=True)
             st.caption(tipo_origem)
 
-        st.markdown("<div style='height: 30px;'></div>", unsafe_allow_html=True)
+        st.markdown("<div style='height: 25px;'></div>", unsafe_allow_html=True)
         
         col_res1, col_res2 = st.columns()
         
@@ -402,8 +304,8 @@ with tab_pesquisa:
             if produtos_ml:
                 for p in produtos_ml:
                     st.markdown(f"""
-                    <div class="zg-link-card">
-                        <a href="{p['link']}" target="_blank" class="zg-link-title">🔗 {p['titulo']}</a><br>
+                    <div style="padding: 12px 0; border-bottom: 1px solid #1a1a1a;">
+                        <a href="{p['link']}" target="_blank" style="color: #ffffff; font-size: 16px; font-weight: 500; text-decoration: none;">🔗 {p['titulo']}</a><br>
                         <span style="color: #ffffff; font-weight: 600; font-size: 18px;">R$ {p['preco']:,.2f}</span>
                         <span style="color: #9a9a9a; margin-left: 15px;">Estoque: <strong>{p['estoque']} un</strong></span>
                         <span style="color: #15846e; margin-left: 10px;">{'🚚 Frete Grátis' if p['frete_gratis'] else ''}</span>
@@ -414,14 +316,14 @@ with tab_pesquisa:
                 
             termo_google = f"{meta['fabricante']} {meta['part_number']} distribuidor estoque brasil"
             google_link = f"https://www.google.com.br/search?q={termo_google.replace(' ', '+')}"
-            st.markdown(f"<br><a href='{google_link}' target='_blank' style='color: var(--color-electric-iris); font-weight: 600;'>🔍 Abrir Busca Completa no Google &rarr;</a>", unsafe_allow_html=True)
+            st.markdown(f"<br><a href='{google_link}' target='_blank' style='color: #8052ff; font-weight: 600;'>🔍 Abrir Busca Completa no Google &rarr;</a>", unsafe_allow_html=True)
 
         with col_res2:
             st.markdown("### 🏭 Contatos de Distribuidores Nacionais")
             st.markdown(f"""
-            <div style="background-color: #0a0a0a; padding: 20px; border-radius: 16px; border: 1px solid #161616;">
-                <span class="zg-tag-amber">CANAL COMERCIAL HOMOLOGADO</span>
-                <p style="color: #ffffff; font-weight: 400; font-size: 16px; margin: 4px 0;"><strong>Fabricante:</strong> {meta['fabricante']}</p>
+            <div style="background-color: #0d0d0d; padding: 20px; border-radius: 12px; border: 1px solid #1f1f1f;">
+                <span class="tag-amber">CANAL COMERCIAL HOMOLOGADO</span>
+                <p style="color: #ffffff; font-weight: 500; font-size: 16px; margin: 4px 0;"><strong>Fabricante:</strong> {meta['fabricante']}</p>
                 <p style="color: #bdbdbd; font-size: 14px; margin: 2px 0;"><strong>Canal Oficial Brasil:</strong> Televendas / Engenharia de Aplicação</p>
                 <p style="color: #bdbdbd; font-size: 14px; margin: 2px 0;"><strong>Região de Atendimento:</strong> Sudeste / Espírito Santo</p>
                 <p style="color: #bdbdbd; font-size: 14px; margin: 2px 0;"><strong>E-mail Sugerido:</strong> vendas.corporativas@{meta['fabricante'].lower().replace(' ', '')}.com.br</p>
@@ -466,16 +368,16 @@ zambonigirondistribuidora@gmail.com | (27) 99706-9911
         )
         st.success("✅ Cotação registrada no histórico compartilhado!")
 
-with tab_historico:
+with tab2:
     st.markdown("### 📂 Histórico de Cotações Compartilhado")
     historico = listar_historico()
     if historico:
         for h in historico:
             data, user, pn, fab, ncm, preco, status, link = h
             st.markdown(f"""
-            <div class="zg-metric-card">
-                <span class="zg-tag-amber">{data} • Operador: {user.upper()}</span>
-                <div style="font-size: 18px; font-weight: 400; color: #ffffff; margin: 4px 0;">
+            <div style="padding: 14px 0; border-bottom: 1px solid #1a1a1a;">
+                <span class="tag-amber">{data} • Operador: {user.upper()}</span>
+                <div style="font-size: 18px; font-weight: 500; color: #ffffff; margin: 4px 0;">
                     <strong>{fab}</strong> — PN: {pn} | <span style="color: #8052ff;">NCM: {ncm}</span>
                 </div>
                 <div style="font-size: 14px; color: #9a9a9a;">
@@ -487,7 +389,7 @@ with tab_historico:
     else:
         st.info("Nenhuma cotação pesquisada ainda.")
 
-with tab_diretorio:
+with tab3:
     st.markdown("### 🏭 Diretório de Fabricantes & Distribuidores Homologados")
     fornecedores = [
         {"nome": "Schneider Electric / Telemecanique", "tipo": "Elétrica & Automação", "contato": "0800 7289 500 / schneider-electric.com.br", "status": "Nacional / Filial SP"},
@@ -498,9 +400,9 @@ with tab_diretorio:
     ]
     for f in fornecedores:
         st.markdown(f"""
-        <div class="zg-metric-card">
-            <span class="zg-tag-iris">{f['tipo']}</span>
-            <div style="font-size: 18px; font-weight: 400; color: #ffffff; margin: 4px 0;">{f['nome']}</div>
+        <div style="padding: 12px 0; border-bottom: 1px solid #1a1a1a;">
+            <span class="tag-iris">{f['tipo']}</span>
+            <div style="font-size: 17px; font-weight: 500; color: #ffffff; margin: 3px 0;">{f['nome']}</div>
             <div style="font-size: 14px; color: #bdbdbd;">Contato: {f['contato']} | <strong>{f['status']}</strong></div>
         </div>
         """, unsafe_allow_html=True)
