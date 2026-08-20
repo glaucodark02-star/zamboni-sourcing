@@ -239,18 +239,16 @@ if not st.session_state["autenticado"]:
     st.markdown("<p>Ambiente seguro para pesquisa automatizada de cotações, NCM, estoque e distribuidores.</p>", unsafe_allow_html=True)
     st.markdown("<div style='height: 30px;'></div>", unsafe_allow_html=True)
     
-    col_l1, col_l2 = st.columns()
-    with col_l1:
-        user_input = st.text_input("Usuário:", placeholder="ex: ivo")
-        pass_input = st.text_input("Senha:", type="password", placeholder="••••••••")
-        st.markdown("<div style='height: 12px;'></div>", unsafe_allow_html=True)
-        if st.button("ACESSAR SISTEMA"):
-            if user_input.lower() in USUARIOS_SISTEMA and USUARIOS_SISTEMA[user_input.lower()] == pass_input:
-                st.session_state["autenticado"] = True
-                st.session_state["usuario"] = user_input.lower()
-                st.rerun()
-            else:
-                st.error("Credenciais inválidas. Tente novamente.")
+    user_input = st.text_input("Usuário:", placeholder="ex: ivo")
+    pass_input = st.text_input("Senha:", type="password", placeholder="••••••••")
+    st.markdown("<div style='height: 12px;'></div>", unsafe_allow_html=True)
+    if st.button("ACESSAR SISTEMA"):
+        if user_input.lower() in USUARIOS_SISTEMA and USUARIOS_SISTEMA[user_input.lower()] == pass_input:
+            st.session_state["autenticado"] = True
+            st.session_state["usuario"] = user_input.lower()
+            st.rerun()
+        else:
+            st.error("Credenciais inválidas. Tente novamente.")
     st.stop()
 
 # ==============================================================================
