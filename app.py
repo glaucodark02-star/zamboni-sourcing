@@ -372,7 +372,7 @@ with tab_pesquisa:
         st.markdown("<div style='height: 20px;'></div>", unsafe_allow_html=True)
         st.markdown("---")
         
-        c1, c2, c3, c4 = st.columns(4)
+        c1, c2, c3, c4 = st.columns()
         with c1:
             st.markdown('<div class="zg-tag-amber">PART NUMBER & MARCA</div>', unsafe_allow_html=True)
             st.markdown(f"<div class='zg-metric-val'>{meta['part_number']}</div>", unsafe_allow_html=True)
